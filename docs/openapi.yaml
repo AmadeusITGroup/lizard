@@ -1,0 +1,168 @@
+# path: docs/openapi.yaml
+openapi: 3.1.0
+info:
+  title: LIZARD API
+  version: 0.1.0
+servers:
+  - url: http://localhost:8000
+paths:
+  /health:
+    get:
+      operationId: health
+      responses:
+        "200":
+          description: OK
+  /ingest/events:
+    post:
+      operationId: ingestEvents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/EventIn'
+      responses:
+        "200": { description: Ingested }
+  /ingest/entities:
+    post:
+      operationId: ingestEntities
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntitiesIn'
+      responses:
+        "200": { description: Ingested }
+  /query/events:
+    get:
+      operationId: queryEvents
+      parameters:
+        - in: query
+          name: start
+          schema: { type: string, format: date-time }
+        - in: query
+          name: end
+          schema: { type: string, format: date-time }
+        - in: query
+          name: user
+          schema: { type: string }
+        - in: query
+          name: account
+          schema: { type: string }
+        - in: query
+          name: source
+          schema: { type: string }
+        - in: query
+          name: ip
+          schema: { type: string }
+        - in: query
+          name: device
+          schema: { type: string }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 5000, minimum: 1, maximum: 50000 }
+      responses:
+        "200":
+          description: Events
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: '#/components/schemas/EventOut' }
+  /query/entities:
+    get:
+      operationId: queryEntities
+      parameters:
+        - in: query
+          name: user
+          schema: { type: string }
+        - in: query
+          name: account
+          schema: { type: string }
+        - in: query
+          name: ip
+          schema: { type: string }
+        - in: query
+          name: device
+          schema: { type: string }
+      responses:
+        "200":
+          description: Entities and links
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GraphBundle'
+  /export/bundle:
+    post:
+      operationId: exportBundle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                selection:
+                  type: object
+      responses:
+        "200":
+          description: Zip with PNG/CSV/JSON
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+components:
+  schemas:
+    EventIn:
+      type: object
+      required: [ts, source, event_type]
+      properties:
+        ts: { type: string, format: date-time }
+        source: { type: string }
+        event_type: { type: string }
+        user_id: { type: string }
+        account_id: { type: string }
+        device_id: { type: string }
+        card_hash: { type: string }
+        ip: { type: string }
+        geo_lat: { type: number }
+        geo_lon: { type: number }
+        country: { type: string }
+        city: { type: string }
+        is_unusual: { type: boolean }
+        meta: { type: object, additionalProperties: true }
+    EventOut:
+      allOf: [ { $ref: '#/components/schemas/EventIn' } ]
+    EntitiesIn:
+      type: object
+      properties:
+        entities:
+          type: array
+          items:
+            type: object
+            required: [type, key]
+            properties:
+              type: { type: string, enum: [USER, ACCOUNT, DEVICE, CARD, IP] }
+              key: { type: string }
+              props: { type: object, additionalProperties: true }
+        links:
+          type: array
+          items:
+            type: object
+            required: [src_key, dst_key, relation]
+            properties:
+              src_key: { type: string }
+              dst_key: { type: string }
+              relation: { type: string }
+              props: { type: object, additionalProperties: true }
+    GraphBundle:
+      type: object
+      properties:
+        nodes: { type: array, items: { type: object } }

@@ -1,0 +1,59 @@
+# ============================================================
+# LIZARD Cloud Configuration — Example
+# ============================================================
+# Copy this file to lizard-cloud.yaml and customise for your
+# environment.  All sections are optional; omit what you don't need.
+#
+# Environment variable placeholders (${VAR}) are resolved at load time.
+# ============================================================
+
+mode: local   # "local" or "cloud"
+
+# ---- Application Gateways ----
+# Define gateways when direct network access to Azure is blocked.
+gateways:
+  - name: tst-gateway
+    fqdn: gateway-tst.corp.example.com
+    environment: TST
+    exposed_workspaces:
+      - "1234567890123456"
+    exposed_storage_accounts:
+      - stglizardtst
+
+  - name: prd-gateway
+    fqdn: gateway-prd.corp.example.com
+    environment: PRD
+    exposed_workspaces:
+      - "9876543210987654"
+    exposed_storage_accounts:
+      - stglizardprd
+
+# ---- Databricks Connections ----
+databricks_connections:
+  - name: tst-workspace
+    workspace_id: "1234567890123456"
+    connectivity: gateway          # "direct" or "gateway"
+    gateway_name: tst-gateway      # must match a gateway above
+    auth:
+      type: service_principal
+      tenant_id: ${AZURE_TENANT_ID}
+      client_id: ${AZURE_CLIENT_ID}
+      client_secret: ${AZURE_CLIENT_SECRET}
+    cluster:
+      cluster_id: "0123-456789-abcdef"
+      spark_config:
+        spark.sql.shuffle.partitions: "200"
+
+# ---- Storage Connections ----
+storage_connections:
+  - name: tst-datalake
+    account_name: stglizardtst
+    container: fraud-data
+    endpoint_type: blob            # "blob" or "dfs"
+    connectivity: gateway
+    gateway_name: tst-gateway
+    auth:
+      type: service_principal
+      tenant_id: ${AZURE_TENANT_ID}
+      client_id: ${AZURE_CLIENT_ID}
+      client_secret: ${AZURE_CLIENT_SECRET}

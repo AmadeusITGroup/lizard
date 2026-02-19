@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <!-- body -->
+  <ellipse cx="55" cy="62" rx="28" ry="18" fill="#4CAF50" transform="rotate(-10 55 62)"/>
+  <!-- head -->
+  <ellipse cx="88" cy="48" rx="16" ry="12" fill="#66BB6A" transform="rotate(-15 88 48)"/>
+  <!-- eye -->
+  <circle cx="94" cy="44" r="3.5" fill="#fff"/>
+  <circle cx="95" cy="43.5" r="1.8" fill="#1B5E20"/>
+  <!-- mouth / smile -->
+  <path d="M100 52 Q106 50 108 46" fill="none" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- front leg left -->
+  <path d="M44 74 L34 90 L28 88 M34 90 L36 96 M34 90 L30 95" fill="none" stroke="#388E3C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- front leg right -->
+  <path d="M62 76 L58 92 L52 91 M58 92 L60 98 M58 92 L54 97" fill="none" stroke="#388E3C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- back leg left -->
+  <path d="M34 66 L20 78 L14 76 M20 78 L22 84 M20 78 L16 83" fill="none" stroke="#388E3C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- back leg right -->
+  <path d="M48 68 L42 82 L36 80 M42 82 L44 88 M42 82 L38 87" fill="none" stroke="#388E3C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- tail -->
+  <path d="M28 58 Q10 50 6 32 Q4 24 10 20" fill="none" stroke="#4CAF50" stroke-width="4" stroke-linecap="round"/>
+  <!-- belly stripe -->
+  <ellipse cx="56" cy="66" rx="20" ry="8" fill="#A5D6A7" opacity="0.6" transform="rotate(-10 56 66)"/>
+  <!-- dorsal spots -->
+  <circle cx="50" cy="54" r="2.5" fill="#2E7D32" opacity="0.5"/>
+  <circle cx="60" cy="52" r="2" fill="#2E7D32" opacity="0.5"/>
+  <circle cx="70" cy="51" r="2.5" fill="#2E7D32" opacity="0.5"/>
+  <circle cx="40" cy="56" r="2" fill="#2E7D32" opacity="0.4"/>
+</svg>

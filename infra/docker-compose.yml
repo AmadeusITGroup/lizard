@@ -1,0 +1,44 @@
+# Docker Compose for LIZARD - Fraud Pattern Visualizer
+version: "3.9"
+
+services:
+  # FastAPI Backend
+  api:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.api
+    container_name: lizard-api
+    env_file: ../.env
+    environment:
+      - LIZARD_DB_URL=sqlite+aiosqlite:///./data/lizard.db
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../data:/app/data
+      - lizard-db:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  # React UI
+  ui:
+    build:
+      context:  ..
+      dockerfile: infra/Dockerfile.ui
+      args:
+        - VITE_API_BASE=http://localhost:8000
+    container_name: lizard-ui
+    ports:
+      - "3000:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  lizard-db:
+    name: lizard-database

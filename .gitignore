@@ -1,0 +1,71 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Type checking
+.mypy_cache/
+
+# Linting
+.ruff_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Database
+*.db
+lizard.db
+
+# Data files
+data/
+exports/
+*.csv
+!scripts/*.csv
+
+# Cache
+.lizard_cache/
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Node.js (ui-react)
+ui-react/node_modules/
+ui-react/dist/
+ui-react/.vite/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Build artifacts
+*.egg
+MANIFEST
+
+# Backup files
+*.backup
+*.bak
+.git.backup.*
+
+!ui-react/src/data/
