@@ -1,3 +1,11 @@
+<div align="center">
+
+![GASPAR](rescue_logo.png)
+
+</div>
+
+The content of this repository comprises the work which is being been developed in the scope of RESCUE (RESilient Cloud for EUropE) project.
+
 # LIZARD – Fraud Pattern Visualizer
 
 <p align="center">
