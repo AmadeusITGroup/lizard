@@ -1,7 +1,15 @@
+<div align="center">
+
+![LIZARD](rescue_logo.png)
+
+</div>
+
+The content of this repository comprises the work which is being been developed in the scope of RESCUE (RESilient Cloud for EUropE) project.
+
 # LIZARD – Fraud Pattern Visualizer
 
 <p align="center">
-  <strong>Visualized Indicators for Zonal Anomaly Risk DETECTION​.
+  <strong>Visualized Indicators for Zonal Anomaly Risk DETECTION​.</strong>
 </p>
 
 <p align="center">
@@ -10,7 +18,7 @@
   <a href="#-dashboard-panels">Dashboard Panels</a> •
   <a href="#️-cloud-integration">Cloud Integration</a> •
   <a href="#-api-documentation">API Docs</a> •
-  <a href="#-development">Development</a>
+  <a href="GETTING_STARTED.md">Getting Started</a>
 </p>
 
 ---
@@ -62,51 +70,16 @@ LIZARD can operate in two execution modes — **Local** and **Cloud** — switch
 
 ## 🚀 Quick Start
 
-### Prerequisites
+For full installation instructions, environment configuration, Docker deployment, and development commands, see the **[Getting Started Guide](GETTING_STARTED.md)**.
 
-- **Python 3.12+**
-- **Node.js 18+** (for UI development)
-- **Docker** (optional, for containerized deployment)
+**TL;DR:**
 
-### Installation
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/pmboust1_amadeus/Lizard.git
-cd Lizard
-
-# 2. Create and activate virtual environment
-python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-
-# 3. Install Python dependencies
-make install-all
-
-# 4. Install UI dependencies
-make ui-install
-
-# 5. Generate synthetic fraud data
-make data
-```
-
-### Running the Application
-
-```bash
-# Terminal 1: Start the API
-make api
-# API available at:  http://localhost:8000/docs
-
-# Terminal 2: Start the UI
-make ui
-# UI available at: http://localhost:5173
-```
-
-### Upload Data
-
-1. Open the UI at http://localhost:5173
-2. Navigate to **Mapping** page
-3. Upload CSV files from `./data/` directory
-4. The AI mapper will suggest field mappings automatically
+    git clone https://github.com/AmadeusITGroup/lizard.git
+    cd lizard
+    python -m venv .venv && source .venv/bin/activate
+    make install-all && make ui-install && make data
+    # Terminal 1: make api   → http://localhost:8000/docs
+    # Terminal 2: make ui    → http://localhost:5173
 
 ---
 
@@ -183,49 +156,47 @@ LIZARD's cloud integration is layered across six phases, each building on the la
 
 ### Architecture Overview
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  React UI                                                       │
-│  ┌──────────────┐ ┌───────────────┐ ┌────────────────────────┐  │
-│  │ Cloud Toggle │ │ Cloud Browser │ │ Settings Page           │  │
-│  │ (AppBar)     │ │ (Storage/DBFS)│ │ (Gateways/Connections) │  │
-│  └──────┬───────┘ └───────┬───────┘ └───────────┬────────────┘  │
-│         │                 │                      │               │
-│  ┌──────┴─────────────────┴──────────────────────┴────────────┐  │
-│  │  CloudContext (mode, config, scheduler, API helpers)        │  │
-│  └────────────────────────────┬────────────────────────────────┘  │
-└───────────────────────────────┼──────────────────────────────────┘
-                                │ REST API
-┌───────────────────────────────┼──────────────────────────────────┐
-│  FastAPI Backend              │                                   │
-│  ┌────────────────────────────┴───────────────────────────────┐  │
-│  │  cloud_api.py (config, test, browse, engine, export,       │  │
-│  │               analytics, cluster, scheduler, health)       │  │
-│  └────────────────────────────┬───────────────────────────────┘  │
-│                               │                                   │
-│  ┌────────────────────────────┴───────────────────────────────┐  │
-│  │  cloud/ package                                             │  │
-│  │  ├── config.py          YAML config + runtime state         │  │
-│  │  ├── connectivity.py    Gateway registry + endpoint resolve │  │
-│  │  ├── diagnostics.py     Error types + connection testing    │  │
-│  │  ├── audit.py           Ring-buffer audit log               │  │
-│  │  ├── cluster_manager.py Databricks cluster/warehouse ops    │  │
-│  │  ├── output_storage.py  Export to Blob / DBFS               │  │
-│  │  ├── analytics_engine.py  Anomaly + clustering wrappers     │  │
-│  │  ├── scheduler.py       Background job scheduler            │  │
-│  │  └── execution/                                             │  │
-│  │      ├── base.py        ExecutionEngine ABC + ExecutionResult│  │
-│  │      ├── local_engine.py  Pandas engine (wraps existing)    │  │
-│  │      ├── spark_engine.py  Databricks Spark SQL engine       │  │
-│  │      └── engine_factory.py  Engine selection + caching      │  │
-│  └─────────────────────────────────────────────────────────────┘  │
-│                               │                                   │
-│              ┌────────────────┼────────────────┐                  │
-│              ▼                ▼                ▼                  │
-│    Azure Blob / ADLS    Databricks         DBFS                  │
-│    (via azure-sdk)      (via databricks-sdk)                     │
-└──────────────────────────────────────────────────────────────────┘
-```
+    ┌─────────────────────────────────────────────────────────────────┐
+    │  React UI                                                       │
+    │  ┌──────────────┐ ┌───────────────┐ ┌────────────────────────┐  │
+    │  │ Cloud Toggle │ │ Cloud Browser │ │ Settings Page           │  │
+    │  │ (AppBar)     │ │ (Storage/DBFS)│ │ (Gateways/Connections) │  │
+    │  └──────┬───────┘ └───────┬───────┘ └───────────┬────────────┘  │
+    │         │                 │                      │               │
+    │  ┌──────┴─────────────────┴──────────────────────┴────────────┐  │
+    │  │  CloudContext (mode, config, scheduler, API helpers)        │  │
+    │  └────────────────────────────┬────────────────────────────────┘  │
+    └───────────────────────────────┼──────────────────────────────────┘
+                                    │ REST API
+    ┌───────────────────────────────┼──────────────────────────────────┐
+    │  FastAPI Backend              │                                   │
+    │  ┌────────────────────────────┴───────────────────────────────┐  │
+    │  │  cloud_api.py (config, test, browse, engine, export,       │  │
+    │  │               analytics, cluster, scheduler, health)       │  │
+    │  └────────────────────────────┬───────────────────────────────┘  │
+    │                               │                                   │
+    │  ┌────────────────────────────┴───────────────────────────────┐  │
+    │  │  cloud/ package                                             │  │
+    │  │  ├── config.py          YAML config + runtime state         │  │
+    │  │  ├── connectivity.py    Gateway registry + endpoint resolve │  │
+    │  │  ├── diagnostics.py     Error types + connection testing    │  │
+    │  │  ├── audit.py           Ring-buffer audit log               │  │
+    │  │  ├── cluster_manager.py Databricks cluster/warehouse ops    │  │
+    │  │  ├── output_storage.py  Export to Blob / DBFS               │  │
+    │  │  ├── analytics_engine.py  Anomaly + clustering wrappers     │  │
+    │  │  ├── scheduler.py       Background job scheduler            │  │
+    │  │  └── execution/                                             │  │
+    │  │      ├── base.py        ExecutionEngine ABC + ExecutionResult│  │
+    │  │      ├── local_engine.py  Pandas engine (wraps existing)    │  │
+    │  │      ├── spark_engine.py  Databricks Spark SQL engine       │  │
+    │  │      └── engine_factory.py  Engine selection + caching      │  │
+    │  └─────────────────────────────────────────────────────────────┘  │
+    │                               │                                   │
+    │              ┌────────────────┼────────────────┐                  │
+    │              ▼                ▼                ▼                  │
+    │    Azure Blob / ADLS    Databricks         DBFS                  │
+    │    (via azure-sdk)      (via databricks-sdk)                     │
+    └──────────────────────────────────────────────────────────────────┘
 
 ### Execution Modes
 
@@ -239,44 +210,42 @@ Switch modes at any time using the toggle in the app bar, or via `POST /cloud/mo
 
 Cloud configuration is stored in `lizard-cloud.yaml` (auto-created on first use) and can be edited via the Settings UI or directly in YAML.
 
-```yaml
-# lizard-cloud.yaml
-mode: local  # or "cloud"
+    # lizard-cloud.yaml
+    mode: local  # or "cloud"
 
-gateways:
-  - name: tst-gateway
-    fqdn: gateway-tst.corp.com
-    environment: TST
-    exposed_workspaces: ["123456789"]
-    exposed_storage_accounts: ["myaccount"]
+    gateways:
+      - name: tst-gateway
+        fqdn: gateway-tst.corp.com
+        environment: TST
+        exposed_workspaces: ["123456789"]
+        exposed_storage_accounts: ["myaccount"]
 
-databricks_connections:
-  - name: dev-workspace
-    workspace_id: "123456789"
-    connectivity: gateway        # "direct" or "gateway"
-    gateway_name: tst-gateway    # required when connectivity=gateway
-    auth:
-      type: service_principal    # or "developer_token", "username_password"
-      tenant_id: ${AZURE_TENANT_ID}
-      client_id: ${AZURE_CLIENT_ID}
-      client_secret: ${AZURE_CLIENT_SECRET}
-    cluster:
-      cluster_id: 0123-456789-abc
-      cluster_name: analytics-cluster
+    databricks_connections:
+      - name: dev-workspace
+        workspace_id: "123456789"
+        connectivity: gateway        # "direct" or "gateway"
+        gateway_name: tst-gateway    # required when connectivity=gateway
+        auth:
+          type: service_principal    # or "developer_token", "username_password"
+          tenant_id: ${AZURE_TENANT_ID}
+          client_id: ${AZURE_CLIENT_ID}
+          client_secret: ${AZURE_CLIENT_SECRET}
+        cluster:
+          cluster_id: 0123-456789-abc
+          cluster_name: analytics-cluster
 
-storage_connections:
-  - name: fraud-lake
-    account_name: myaccount
-    container: raw-data
-    endpoint_type: dfs           # "blob" or "dfs" (ADLS Gen2)
-    connectivity: gateway
-    gateway_name: tst-gateway
-    auth:
-      type: service_principal
-      tenant_id: ${AZURE_TENANT_ID}
-      client_id: ${AZURE_CLIENT_ID}
-      client_secret: ${AZURE_CLIENT_SECRET}
-```
+    storage_connections:
+      - name: fraud-lake
+        account_name: myaccount
+        container: raw-data
+        endpoint_type: dfs           # "blob" or "dfs" (ADLS Gen2)
+        connectivity: gateway
+        gateway_name: tst-gateway
+        auth:
+          type: service_principal
+          tenant_id: ${AZURE_TENANT_ID}
+          client_id: ${AZURE_CLIENT_ID}
+          client_secret: ${AZURE_CLIENT_SECRET}
 
 > **Note:** Environment variable references (`${VAR_NAME}`) are resolved at load time, so secrets never need to appear in the YAML file.
 
@@ -317,16 +286,14 @@ The execution engine abstracts over pandas (local) and Spark SQL (cloud):
 
 The `engine_factory` module selects the appropriate engine based on the current config and caches it. Pipelines are translated to SQL for the Spark engine:
 
-```python
-# Pipeline step types → SQL
-source   → FROM {table}
-filter   → WHERE {conditions}
-aggregate → GROUP BY ... HAVING ...
-sort     → ORDER BY ...
-select   → SELECT {columns}
-join     → JOIN ... ON ...
-distinct → SELECT DISTINCT ...
-```
+    # Pipeline step types → SQL
+    source   → FROM {table}
+    filter   → WHERE {conditions}
+    aggregate → GROUP BY ... HAVING ...
+    sort     → ORDER BY ...
+    select   → SELECT {columns}
+    join     → JOIN ... ON ...
+    distinct → SELECT DISTINCT ...
 
 ### Cluster Management
 
@@ -344,17 +311,15 @@ Pipeline results can be exported directly to cloud storage:
 - **Azure Blob Storage** — Upload as CSV or Parquet to any configured container
 - **Databricks DBFS** — Write to the Databricks file system
 
-```bash
-POST /cloud/export
-{
-  "pipeline": [...],
-  "connection_type": "storage",  # or "dbfs"
-  "connection_name": "fraud-lake",
-  "format": "parquet",
-  "container": "exports",
-  "path_prefix": "/lizard-results"
-}
-```
+    POST /cloud/export
+    {
+      "pipeline": [...],
+      "connection_type": "storage",  # or "dbfs"
+      "connection_name": "fraud-lake",
+      "format": "parquet",
+      "container": "exports",
+      "path_prefix": "/lizard-results"
+    }
 
 ### Cloud Analytics
 
@@ -399,128 +364,96 @@ The **Cloud Browser** page (available only in cloud mode) lets you interactively
 
 ## 📁 Project Structure
 
-```
-Lizard/
-├── app/                        # FastAPI backend
-│   ├── main.py                 # Main API routes & viz endpoints
-│   ├── mapping_api.py          # Data mapping endpoints
-│   ├── rules_api.py            # Rules engine endpoints
-│   ├── workbench_api.py        # Data workbench endpoints
-│   └── cloud_api.py            # Cloud mode API (config, browse, engine,
-│                                #   cluster, export, analytics, scheduler, health)
-├── analytics/                  # Analytics modules
-│   ├── simple_anomaly.py       # Z-Score + EWMA detection
-│   ├── advanced_anomaly.py     # Isolation Forest detection
-│   ├── rules_engine.py         # Rules evaluation engine
-│   └── clustering.py           # Geo-temporal clustering
-├── cloud/                      # Cloud integration package
-│   ├── __init__.py             # Feature flag (CLOUD_DEPS_AVAILABLE)
-│   ├── config.py               # YAML config: load, save, get_config singleton
-│   ├── constants.py            # URL templates, endpoint types, defaults
-│   ├── connectivity.py         # GatewayRegistry + EndpointResolver
-│   ├── diagnostics.py          # ConfigurationError, ConnectivityError, test helpers
-│   ├── audit.py                # Ring-buffer audit log (record, get_entries, get_stats)
-│   ├── cluster_manager.py      # Databricks cluster/warehouse operations
-│   ├── output_storage.py       # Export to Azure Blob / DBFS
-│   ├── analytics_engine.py     # Anomaly + clustering wrappers
-│   ├── scheduler.py            # Background task scheduler
-│   └── execution/              # Execution engine abstraction
-│       ├── __init__.py
-│       ├── base.py             # ExecutionEngine ABC + ExecutionResult
-│       ├── local_engine.py     # LocalPandasEngine (wraps PipelineExecutor)
-│       ├── spark_engine.py     # SparkDatabricksEngine (Spark SQL)
-│       └── engine_factory.py   # Engine selection, caching, reset
-├── domain/                     # Domain models
-│   ├── models.py               # SQLAlchemy ORM models
-│   └── schemas.py              # Pydantic schemas
-├── mapping/                    # Data mapping
-│   ├── ai_mapper.py            # AI-assisted field mapping
-│   ├── validation.py           # Data validation rules
-│   └── expr.py                 # Expression evaluation
-├── connectors/                 # Data connectors
-│   └── csv/                    # CSV loader
-├── ui-react/                   # React frontend (Vite + MUI)
-│   ├── src/
-│   │   ├── api.ts              # API client (viz, cloud, scheduler)
-│   │   ├── components/
-│   │   │   ├── AppLayout.tsx           # App shell with nav + cloud toggle
-│   │   │   ├── CloudModeToggle.tsx     # Cloud/Local switch in header
-│   │   │   ├── JobProgressPanel.tsx    # Scheduler dashboard panel
-│   │   │   ├── AddVisualizationDialog.tsx # Panel picker (incl. jobs)
-│   │   │   ├── AnomalyDetailDrawer.tsx
-│   │   │   ├── GlobeDeck.tsx
-│   │   │   ├── MappingManager.tsx
-│   │   │   └── RulesManager.tsx
-│   │   ├── sections/           # Dashboard visualization panels
-│   │   │   ├── TimelinePanel.tsx
-│   │   │   ├── GlobePanel.tsx
-│   │   │   ├── MapPanel.tsx
-│   │   │   ├── PieChartPanel.tsx
-│   │   │   ├── BarChartPanel.tsx
-│   │   │   ├── ScatterPlotPanel.tsx
-│   │   │   └── LinkGraphPanel.tsx
-│   │   ├── pages/
-│   │   │   ├── Dashboard.tsx           # Drag-and-drop panel dashboard
-│   │   │   ├── MappingPage.tsx
-│   │   │   ├── RulesPage.tsx
-│   │   │   ├── WorkbenchPage.tsx
-│   │   │   ├── DataManagerPage.tsx
-│   │   │   ├── CloudBrowserPage.tsx    # Azure Storage / DBFS browser
-│   │   │   └── SettingsPage.tsx        # Cloud config, gateways, connections
-│   │   └── context/
-│   │       ├── FiltersContext.tsx       # Global date/source filters
-│   │       └── CloudContext.tsx         # Cloud mode, config, scheduler state
-│   └── package.json
-├── scripts/                    # Utility scripts
-│   └── generate_synthetic.py
-├── infra/                      # Docker & deployment
-│   ├── Dockerfile.api
-│   ├── Dockerfile.ui
-│   ├── docker-compose.yml
-│   └── nginx.conf
-├── tests/                      # Test suite
-│   ├── test_execution.py       # Execution engine tests
-│   ├── test_cluster_manager.py # Cluster manager tests
-│   ├── test_output_storage.py  # Export / output storage tests
-│   ├── test_analytics_engine.py # Cloud analytics tests
-│   ├── test_scheduler.py       # Scheduler tests
-│   ├── test_api_ingest.py      # Ingest API tests
-│   └── ...
-├── Makefile                    # Development commands
-├── pyproject.toml              # Python dependencies
-├── lizard-cloud.yaml           # Cloud configuration (auto-created)
-└── README.md
-```
-
----
-
-## 🔧 Configuration
-
-Copy `.env.sample` to `.env` and configure:
-
-```bash
-cp .env.sample .env
-```
-
-### Core Settings
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `LIZARD_DB_URL` | Database connection URL | `sqlite+aiosqlite:///./lizard.db` |
-| `VITE_API_BASE` | API base URL for UI | `http://localhost:8000` |
-| `OPENAI_API_KEY` | OpenAI API key (for AI mapping) | - |
-| `OPENAI_MODEL` | OpenAI model to use | `gpt-4o-mini` |
-
-### Cloud Settings (optional)
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `AZURE_TENANT_ID` | Azure AD tenant for service principal auth | - |
-| `AZURE_CLIENT_ID` | Service principal client ID | - |
-| `AZURE_CLIENT_SECRET` | Service principal client secret | - |
-| `LIZARD_CLOUD_CONFIG` | Path to cloud config YAML | `lizard-cloud.yaml` |
-
-> Cloud dependencies (`azure-identity`, `azure-storage-blob`, `databricks-sdk`) are optional. LIZARD detects their presence at startup and disables cloud features gracefully if they are missing.
+    Lizard/
+    ├── app/                        # FastAPI backend
+    │   ├── main.py                 # Main API routes & viz endpoints
+    │   ├── mapping_api.py          # Data mapping endpoints
+    │   ├── rules_api.py            # Rules engine endpoints
+    │   ├── workbench_api.py        # Data workbench endpoints
+    │   └── cloud_api.py            # Cloud mode API (config, browse, engine,
+    │                                #   cluster, export, analytics, scheduler, health)
+    ├── analytics/                  # Analytics modules
+    │   ├── simple_anomaly.py       # Z-Score + EWMA detection
+    │   ├── advanced_anomaly.py     # Isolation Forest detection
+    │   ├── rules_engine.py         # Rules evaluation engine
+    │   └── clustering.py           # Geo-temporal clustering
+    ├── cloud/                      # Cloud integration package
+    │   ├── __init__.py             # Feature flag (CLOUD_DEPS_AVAILABLE)
+    │   ├── config.py               # YAML config: load, save, get_config singleton
+    │   ├── constants.py            # URL templates, endpoint types, defaults
+    │   ├── connectivity.py         # GatewayRegistry + EndpointResolver
+    │   ├── diagnostics.py          # ConfigurationError, ConnectivityError, test helpers
+    │   ├── audit.py                # Ring-buffer audit log (record, get_entries, get_stats)
+    │   ├── cluster_manager.py      # Databricks cluster/warehouse operations
+    │   ├── output_storage.py       # Export to Azure Blob / DBFS
+    │   ├── analytics_engine.py     # Anomaly + clustering wrappers
+    │   ├── scheduler.py            # Background job scheduler
+    │   └── execution/              # Execution engine abstraction
+    │       ├── __init__.py
+    │       ├── base.py             # ExecutionEngine ABC + ExecutionResult
+    │       ├── local_engine.py     # LocalPandasEngine (wraps PipelineExecutor)
+    │       ├── spark_engine.py     # SparkDatabricksEngine (Spark SQL)
+    │       └── engine_factory.py   # Engine selection, caching, reset
+    ├── domain/                     # Domain models
+    │   ├── models.py               # SQLAlchemy ORM models
+    │   └── schemas.py              # Pydantic schemas
+    ├── mapping/                    # Data mapping
+    │   ├── ai_mapper.py            # AI-assisted field mapping
+    │   ├── validation.py           # Data validation rules
+    │   └── expr.py                 # Expression evaluation
+    ├── connectors/                 # Data connectors
+    │   └── csv/                    # CSV loader
+    ├── ui-react/                   # React frontend (Vite + MUI)
+    │   ├── src/
+    │   │   ├── api.ts              # API client (viz, cloud, scheduler)
+    │   │   ├── components/
+    │   │   │   ├── AppLayout.tsx           # App shell with nav + cloud toggle
+    │   │   │   ├── CloudModeToggle.tsx     # Cloud/Local switch in header
+    │   │   │   ├── JobProgressPanel.tsx    # Scheduler dashboard panel
+    │   │   │   ├── AddVisualizationDialog.tsx # Panel picker (incl. jobs)
+    │   │   │   ├── AnomalyDetailDrawer.tsx
+    │   │   │   ├── GlobeDeck.tsx
+    │   │   │   ├── MappingManager.tsx
+    │   │   │   └── RulesManager.tsx
+    │   │   ├── sections/           # Dashboard visualization panels
+    │   │   │   ├── TimelinePanel.tsx
+    │   │   │   ├── GlobePanel.tsx
+    │   │   │   ├── MapPanel.tsx
+    │   │   │   ├── PieChartPanel.tsx
+    │   │   │   ├── BarChartPanel.tsx
+    │   │   │   ├── ScatterPlotPanel.tsx
+    │   │   │   └── LinkGraphPanel.tsx
+    │   │   ├── pages/
+    │   │   │   ├── Dashboard.tsx           # Drag-and-drop panel dashboard
+    │   │   │   ├── MappingPage.tsx
+    │   │   │   ├── RulesPage.tsx
+    │   │   │   ├── WorkbenchPage.tsx
+    │   │   │   ├── DataManagerPage.tsx
+    │   │   │   ├── CloudBrowserPage.tsx    # Azure Storage / DBFS browser
+    │   │   │   └── SettingsPage.tsx        # Cloud config, gateways, connections
+    │   │   └── context/
+    │   │       ├── FiltersContext.tsx       # Global date/source filters
+    │   │       └── CloudContext.tsx         # Cloud mode, config, scheduler state
+    │   └── package.json
+    ├── scripts/                    # Utility scripts
+    │   └── generate_synthetic.py
+    ├── infra/                      # Docker & deployment
+    │   ├── Dockerfile.api
+    │   ├── Dockerfile.ui
+    │   ├── docker-compose.yml
+    │   └── nginx.conf
+    ├── tests/                      # Test suite
+    │   ├── test_execution.py       # Execution engine tests
+    │   ├── test_cluster_manager.py # Cluster manager tests
+    │   ├── test_output_storage.py  # Export / output storage tests
+    │   ├── test_analytics_engine.py # Cloud analytics tests
+    │   ├── test_scheduler.py       # Scheduler tests
+    │   ├── test_api_ingest.py      # Ingest API tests
+    │   └── ...
+    ├── Makefile                    # Development commands
+    ├── pyproject.toml              # Python dependencies
+    ├── lizard-cloud.yaml           # Cloud configuration (auto-created)
+    └── README.md
 
 ---
 
@@ -600,73 +533,3 @@ Once the API is running, access:
 | `/cloud/scheduler/jobs/{name}/run` | POST | Trigger a job immediately |
 | `/cloud/scheduler/jobs/{name}/enable` | POST | Enable a scheduled job |
 | `/cloud/scheduler/jobs/{name}/disable` | POST | Disable a scheduled job |
-
----
-
-## 🧪 Development
-
-```bash
-# Install all dependencies
-make install-all
-make ui-install
-
-# Run linting
-make lint
-
-# Auto-fix linting issues
-make lint-fix
-
-# Run tests
-make test
-
-# Run tests with coverage
-make test-cov
-
-# Type checking
-make type
-
-# Clean build artifacts
-make clean
-
-# Full reset (including database)
-make reset
-```
-
----
-
-## 🐳 Docker Deployment
-
-```bash
-# Build and start all services
-make docker-up
-
-# Access:
-# - UI: http://localhost:3000
-# - API: http://localhost:8000/docs
-
-# Stop services
-make docker-down
-
-# View logs
-docker compose -f infra/docker-compose.yml logs -f
-```
-
----
-
-## 📝 License
-
-This project is licensed under the MIT License.
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📧 Contact
-
-LIZARD Team - mehdi.boustala@amadeus.com
-
-Project Link: [https://github.com/pmboust1_amadeus/Lizard](https://github.com/pmboust1_amadeus/Lizard)

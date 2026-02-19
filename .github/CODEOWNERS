@@ -1,0 +1,20 @@
+# LIZARD Code Owners
+# These owners will be automatically requested for review when someone opens a PR.
+
+# Default owners for everything in the repo
+* @mboustala
+
+# Backend / API
+/app/ @mboustala
+/domain/ @mboustala
+/cloud/ @mboustala
+
+# Frontend
+/ui-react/ @mboustala
+
+# Infrastructure
+/infra/ @mboustala
+/.github/ @mboustala
+
+# Documentation
+*.md @mboustala
