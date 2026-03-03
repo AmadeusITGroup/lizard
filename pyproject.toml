@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "LIZARD – Fraud Pattern Visualizer (timeline, map, link graph) with AI-assisted schema mapping"
 readme = "README.md"
 requires-python = ">=3.12"
-license = { text = "MIT" }
+license = { text = "license" }
 authors = [
   { name = "LIZARD Team", email = "mehdi.boustala@amadeus.com" }
 ]
