@@ -4,7 +4,7 @@
 
 </div>
 
-The content of this repository comprises the work which is being been developed in the scope of RESCUE (RESilient Cloud for EUropE) project.
+The content of this repository comprises the work which is being developed in the scope of the **RESCUE** (**RES**ilient **C**loud for **EU**ropE) project, a part of the **IPCEI-CIS** (IPCEI Next Generation Cloud Infrastructure and Services), the key digital policy project aimed at strengthening Europe's digital and technological sovereignty.
 
 # LIZARD – Fraud Pattern Visualizer
 
