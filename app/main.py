@@ -758,7 +758,7 @@ async def upload_events_batch(
     return UploadBatchResponse(files=len(files), total_ingested=total, results=results)
 
 
-# ════════════════════════════════════════════════════════════���═════════
+# ══════════════════════════════════════════════════════════════════════
 # Raw query endpoints
 # ══════════════════════════════════════════════════════════════════════
 
@@ -983,7 +983,7 @@ async def analytics_advanced_post(
 AnalyticsMode = Literal["none", "simple", "advanced"]
 Metric = Literal["count", "avg", "max", "sum"]
 _BUCKET_TO_FREQ = {
-    "1m": "T", "5m": "5T", "15m": "15T", "1h": "1H", "6h": "6H", "1d": "1D",
+    "1m": "min", "5m": "5min", "15m": "15min", "1h": "h", "6h": "6h", "1d": "1D",
 }
 
 
@@ -1064,7 +1064,7 @@ async def _timeline_impl(body: TimelineQuery, session: AsyncSession):
 
     # Bucketing
     freq_map = {
-        "30s": "30S", "1m": "min", "2m": "2min", "5m": "5min",
+        "30s": "30s", "1m": "min", "2m": "2min", "5m": "5min",
         "10m": "10min", "15m": "15min", "30m": "30min",
         "1h": "h", "3h": "3h", "6h": "6h", "12h": "12h", "1d": "1D",
     }
@@ -1259,9 +1259,9 @@ async def viz_globe_post(body: GlobeQuery = Body(...), limit: int = 50_000, sess
 
 
 _BUCKET_TO_FREQ_FULL = {
-    "30s": "30S", "1m": "T", "2m": "2T", "5m": "5T", "10m": "10T",
-    "15m": "15T", "30m": "30T", "1h": "1H", "3h": "3H", "6h": "6H",
-    "12h": "12H", "1d": "1D",
+    "30s": "30s", "1m": "min", "2m": "2min", "5m": "5min", "10m": "10min",
+    "15m": "15min", "30m": "30min", "1h": "h", "3h": "3h", "6h": "6h",
+    "12h": "12h", "1d": "1D",
 }
 
 

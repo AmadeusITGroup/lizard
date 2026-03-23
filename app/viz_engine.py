@@ -112,7 +112,7 @@ def _local_analytics(
     """Run analytics locally via the existing pandas functions."""
     if analytics == "simple":
         from analytics.simple_anomaly import mark_anomalies
-        return mark_anomalies(df, z_thr=z_thr, bucket=bucket or "1m")
+        return mark_anomalies(df, z_thr=z_thr, bucket=bucket or "1min")
     if analytics == "advanced":
         from analytics.advanced_anomaly import compute_advanced_anomaly
         return compute_advanced_anomaly(

@@ -3,6 +3,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 from typing import List, Dict, Any
+import re
 
 # Bucket to pandas frequency mapping
 _BUCKET_TO_FREQ = {
@@ -35,6 +36,20 @@ _BUCKET_TO_MINUTES = {
     "12h": 720,
     "1d": 1440,
 }
+
+# Pandas 2.2+ requires lowercase frequency aliases
+_DEPRECATED_FREQ = {"H": "h", "T": "min", "S": "s", "L": "ms", "U": "us", "N": "ns"}
+_FREQ_RE = re.compile(r"(\d*)\s*([A-Za-z]+)")
+
+
+def _normalize_freq(freq: str) -> str:
+    """Convert deprecated uppercase pandas frequency aliases to lowercase."""
+    m = _FREQ_RE.fullmatch(freq.strip())
+    if m:
+        num, alias = m.group(1), m.group(2)
+        alias = _DEPRECATED_FREQ.get(alias, alias)
+        return f"{num}{alias}"
+    return freq
 
 
 def _robust_minute_counts(
@@ -82,6 +97,7 @@ def _robust_minute_counts(
 
     # Get frequency string
     freq = _BUCKET_TO_FREQ.get(bucket, "1min")
+    freq = _normalize_freq(freq)
 
     # Aggregate by bucket
     per_bucket = (
@@ -247,6 +263,7 @@ def mark_anomalies(
 
     # Get frequency string
     freq = _BUCKET_TO_FREQ.get(bucket, "1min")
+    freq = _normalize_freq(freq)
 
     # Per-user per-bucket aggregation
     per_bucket = (
@@ -341,3 +358,4 @@ def mark_anomalies(
         d = d.drop(columns=["feature_val"])
 
     return d
+

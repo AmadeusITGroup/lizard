@@ -23,7 +23,7 @@ MANAGEMENT_SCOPE = "https://management.azure.com/.default"
 
 # Direct Databricks workspace URL template
 # {workspace_id} is the numeric Azure Databricks workspace ID
-DATABRICKS_DIRECT_HOST_TEMPLATE = "https://adb-{workspace_id}.azuredatabricks.net"
+DATABRICKS_DIRECT_HOST_TEMPLATE = "https://{gateway_fqdn}/databricks/{workspace_id}"
 
 # Direct Azure Blob Storage endpoint
 # {account_name} is the storage account name
